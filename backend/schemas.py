@@ -256,3 +256,90 @@ class ReglaCobroOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# COBROS
+class GenerarCobro(BaseModel):
+    id_estudiante   : int
+    id_periodo      : int
+    semestre        : int
+    modalidad_cobro : str        # GLOBAL o POR_CREDITOS
+    id_asignaturas  : Optional[list[int]] = None  # solo si es POR_CREDITOS
+    codigo_cobro    : str        # ej: PMAT o PCRE
+
+class DetalleVolanteOut(BaseModel):
+    id_codigo_detalle    : int
+    id_volante_matricula : int
+    cantidad             : float
+    valor_unitario       : float
+
+    class Config:
+        from_attributes = True
+
+class VolanteOut(BaseModel):
+    id_volante        : int
+    numero_volante    : str
+    fecha_generacion  : str
+    semestre_a_cursar : int
+    generacion_tipo   : str
+    estado            : str
+    modalidad_cobro   : str
+    id_estudiante     : int
+    id_periodo        : int
+    id_programa       : int
+    monto_total       : float
+    detalles          : list[DetalleVolanteOut] = []
+
+    class Config:
+        from_attributes = True
+
+
+# PAGOS
+class RegistrarPago(BaseModel):
+    id_volante_matricula : int
+    valor_pagado         : float
+    canal_pago           : str   # CAJA, PSE, TARJETA
+    tipo_pago            : str   # MPAG, ANT, DESC, CRED
+    referencia_pago      : str
+
+class PagoOut(BaseModel):
+    id_pago              : int
+    valor_pagado         : float
+    fecha_pago           : str
+    estado_pago          : str
+    referencia_pago      : str
+    canal_pago           : str
+    tipo_pago            : str
+    id_volante_matricula : int
+
+    class Config:
+        from_attributes = True
+
+
+# CUENTA CORRIENTE
+class MovimientoOut(BaseModel):
+    id_cuenta_corriente   : int
+    numero_secuencia      : int
+    id_codigo_detalle     : int
+    codigo                : str
+    descripcion           : str
+    tipo_origen           : str
+    fecha_movimiento      : str
+    valor                 : float
+
+    class Config:
+        from_attributes = True
+
+class CuentaCorrienteOut(BaseModel):
+    id_cuenta      : int
+    id_estudiante  : int
+    id_periodo     : int
+    estado         : str
+    fecha_apertura : str
+    total_cobros   : float
+    total_pagos    : float
+    balance        : float
+    movimientos    : list[MovimientoOut] = []
+
+    class Config:
+        from_attributes = True
