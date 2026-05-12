@@ -160,7 +160,7 @@ def register(
     except Exception as e:
         # Si el correo falla no rompemos el registro, solo lo logueamos
         print(f"⚠️ No se pudo enviar el correo: {e}")
-        return build_usuario_out(usuario)
+    return build_usuario_out(usuario)
 
 
 @router.post("/login", response_model=schemas.Token)
