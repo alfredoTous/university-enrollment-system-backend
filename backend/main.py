@@ -19,18 +19,18 @@ app.add_middleware(
 )
 
 # Routers
-app.include_router(auth.router)
-app.include_router(users.router)
-app.include_router(codigos_detalle.router)
-app.include_router(programas.router)
-app.include_router(periodos.router)
-app.include_router(estudiantes.router)
-app.include_router(reglas_cobro.router)
-app.include_router(cobros.router)
-app.include_router(volante_pdf.router)
-app.include_router(reportes.router)
+app.include_router(auth.router, prefix="/api")
+app.include_router(users.router, prefix="/api")
+app.include_router(codigos_detalle.router, prefix="/api")
+app.include_router(programas.router, prefix="/api")
+app.include_router(periodos.router, prefix="/api")
+app.include_router(estudiantes.router, prefix="/api")
+app.include_router(reglas_cobro.router, prefix="/api")
+app.include_router(cobros.router, prefix="/api")
+app.include_router(volante_pdf.router, prefix="/api")
+app.include_router(reportes.router, prefix="/api")
 
 
 @app.get("/")
 def root():
-    return {"mensaje": "API ON"}
+    return {"mensaje": "/api ON"}
