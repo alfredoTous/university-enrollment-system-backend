@@ -8,7 +8,7 @@ import models
 from routers import auth
 
 
-router = APIRouter(prefix="/estudiantes")
+router = APIRouter(prefix="/estudiantes", tags=["estudiantes"])
 
 @router.get("/", response_model=list[schemas.EstudianteOut])
 def get_estudiantes(

@@ -10,7 +10,7 @@ import models
 from routers import auth
 
 
-router = APIRouter(prefix="/codigos-detalle")
+router = APIRouter(prefix="/codigos-detalle", tags=["codigos-detalle"])
 
 @router.get("/", response_model=list[schemas.CodigoDetalleOut])
 def get_codigos(db: Session = Depends(database.get_db)):

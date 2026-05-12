@@ -10,7 +10,7 @@ import models
 from routers import auth
 
 
-router = APIRouter(prefix="/programas")
+router = APIRouter(prefix="/programas", tags=["programas"])
 
 
 # -- PROGRAMAS ----------------------------------------------

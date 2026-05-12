@@ -9,7 +9,7 @@ import database
 import models
 from routers import auth
 
-router = APIRouter(prefix="/periodos")
+router = APIRouter(prefix="/periodos", tags=["periodos"])
 
 
 @router.get("/", response_model=list[schemas.PeriodoOut])

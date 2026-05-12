@@ -7,7 +7,7 @@ import models
 from routers import auth
 import schemas
 
-router = APIRouter(prefix="/users")
+router = APIRouter(prefix="/users", tags=["users"])
 
 # FUNCTIONS ---------------------
 def get_user_by_id(user_id: int, db: Session):

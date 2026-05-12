@@ -22,7 +22,7 @@ EXPIRE_MIN = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 ADMIN_SECRET = os.getenv("ADMIN_SECRET")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-router = APIRouter(prefix="/auth")
+router = APIRouter(prefix="/auth", tags=["auth"])
 #------------
 
 

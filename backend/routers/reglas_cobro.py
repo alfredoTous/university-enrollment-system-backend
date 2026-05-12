@@ -7,7 +7,7 @@ import models
 from routers import auth
 
 
-router = APIRouter(prefix="/reglas-cobro")
+router = APIRouter(prefix="/reglas-cobro", tags=["reglas-cobro"])
 
 
 @router.get("/", response_model=list[schemas.ReglaCobroOut])

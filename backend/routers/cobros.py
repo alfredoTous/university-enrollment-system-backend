@@ -9,7 +9,7 @@ import models
 import database
 from routers import auth
 
-router = APIRouter(prefix="/cobros")
+router = APIRouter(prefix="/cobros", tags=["cobros"])
 
 
 # -- FUNCTIONS -----------------------------------------------------------
