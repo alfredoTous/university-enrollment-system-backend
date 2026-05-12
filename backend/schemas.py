@@ -230,11 +230,11 @@ class EstudianteOut(BaseModel):
 
 # REGLAS DE COBRO
 class ReglaCobro(BaseModel):
-    modalidad_cobro      : str   # GLOBAL o POR_CREDITOS
+    modalidad_cobro      : str   # GLOBAL o CREDITOS
     id_periodo           : int
     id_programa          : int
     valor_global         : Optional[float] = None  # solo si modalidad es GLOBAL
-    valor_credito        : Optional[float] = None  # solo si modalidad es POR_CREDITOS
+    valor_credito        : Optional[float] = None  # solo si modalidad es CREDITOS
     fecha_vigencia_desde : Optional[str]  = None
     fecha_vigencia_hasta : Optional[str]  = None
 
@@ -263,8 +263,8 @@ class GenerarCobro(BaseModel):
     id_estudiante   : int
     id_periodo      : int
     semestre        : int
-    modalidad_cobro : str        # GLOBAL o POR_CREDITOS
-    id_asignaturas  : Optional[list[int]] = None  # solo si es POR_CREDITOS
+    modalidad_cobro : str        # GLOBAL o CREDITOS
+    id_asignaturas  : Optional[list[int]] = None  # solo si es CREDITOS
     codigo_cobro    : str        # ej: PMAT o PCRE
 
 class DetalleVolanteOut(BaseModel):

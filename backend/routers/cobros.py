@@ -29,9 +29,9 @@ def calcular_monto(id_programa: int, data: schemas.GenerarCobro, db: Session) ->
             raise HTTPException(status.HTTP_400_BAD_REQUEST, "La regla no tiene valor global definido")
         return float(regla.valor_global), float(regla.valor_global)
 
-    elif data.modalidad_cobro == "POR_CREDITOS":
+    elif data.modalidad_cobro == "CREDITOS":
         if not data.id_asignaturas:
-            raise HTTPException(status.HTTP_400_BAD_REQUEST, "Modalidad POR_CREDITOS requiere lista de asignaturas")
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "Modalidad CREDITOS requiere lista de asignaturas")
 
         total_creditos = 0
         
@@ -121,7 +121,7 @@ def generar_cobro(
     monto_total, valor_unitario = calcular_monto(estudiante.id_programa, data, db)
     cantidad = 1
     
-    if data.modalidad_cobro == "POR_CREDITOS" and data.id_asignaturas:
+    if data.modalidad_cobro == "CREDITOS" and data.id_asignaturas:
         cantidad = len(data.id_asignaturas)
 
     inscripcion = get_or_create_inscripcion(data.id_estudiante, data.id_periodo, db)
@@ -143,7 +143,7 @@ def generar_cobro(
     db.add(volante)
     db.flush()
 
-    if data.modalidad_cobro == "POR_CREDITOS" and data.id_asignaturas:
+    if data.modalidad_cobro == "CREDITOS" and data.id_asignaturas:
         for id_asig in data.id_asignaturas:
             db.add(models.Detalla(
                 id_asignatura  = id_asig,
@@ -232,7 +232,7 @@ def registrar_pago(
 
     pago = models.Pago(
         valor_pagado         = data.valor_pagado,
-        estado_pago          = "APROBADO",
+        estado_pago          = "PENDIENTE",
         referencia_pago      = data.referencia_pago,
         canal_pago           = data.canal_pago,
         tipo_pago            = data.tipo_pago,
@@ -241,8 +241,10 @@ def registrar_pago(
     )
 
     db.add(pago)
+    db.flush()
+
+    pago.estado_pago = "APROBADO"
     db.commit()
-    db.refresh(pago)
     return schemas.PagoOut(
         id_pago              = pago.id_pago,
         valor_pagado         = float(pago.valor_pagado),
