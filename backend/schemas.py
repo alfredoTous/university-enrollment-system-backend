@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-
+from datetime import date, datetime
 
 # Data schemas used for POST data validation
 
@@ -167,12 +167,12 @@ class PeriodoCreate(BaseModel):
     codigo_periodo : str        # ej: 2025-1
     numero_periodo : int        # 1 o 2
     anio           : int        # 2025
-    fecha_inicio   : str        # "2025-01-20"
-    fecha_fin      : str        # "2025-06-15"
+    fecha_inicio   : date        # "2025-01-20"
+    fecha_fin      : date        # "2025-06-15"
 
 class PeriodoUpdate(BaseModel):
-    fecha_inicio   : Optional[str] = None
-    fecha_fin      : Optional[str] = None
+    fecha_inicio   : Optional[date] = None
+    fecha_fin      : Optional[date] = None
     estado         : Optional[str] = None
 
 class PeriodoOut(BaseModel):
@@ -180,8 +180,8 @@ class PeriodoOut(BaseModel):
     codigo_periodo : str
     numero_periodo : int
     anio           : int
-    fecha_inicio   : str
-    fecha_fin      : str
+    fecha_inicio   : date
+    fecha_fin      : date
     estado         : str
 
     class Config:
@@ -200,7 +200,7 @@ class EstudianteCreate(BaseModel):
     telefono_fijo      : Optional[str] = None
     correo_electronico : str
     direccion          : Optional[str] = None
-    fecha_nacimiento   : Optional[str] = None
+    fecha_nacimiento   : Optional[date] = None
     id_programa        : int
 
 class EstudianteUpdate(BaseModel):
@@ -223,7 +223,7 @@ class EstudianteOut(BaseModel):
     telefono_celular   : Optional[str]
     correo_electronico : str
     direccion          : Optional[str]
-    fecha_ingreso      : str
+    fecha_ingreso      : date
     id_programa        : int
     nombre_programa    : Optional[str] = None
 
@@ -238,13 +238,13 @@ class ReglaCobro(BaseModel):
     id_programa          : int
     valor_global         : Optional[float] = None  # solo si modalidad es GLOBAL
     valor_credito        : Optional[float] = None  # solo si modalidad es CREDITOS
-    fecha_vigencia_desde : Optional[str]  = None
-    fecha_vigencia_hasta : Optional[str]  = None
+    fecha_vigencia_desde : Optional[date]  = None
+    fecha_vigencia_hasta : Optional[date]  = None
 
 class ReglaCobroUpdate(BaseModel):
     valor_global         : Optional[float] = None
     valor_credito        : Optional[float] = None
-    fecha_vigencia_hasta : Optional[str]   = None
+    fecha_vigencia_hasta : Optional[date]   = None
     estado               : Optional[str]   = None
 
 class ReglaCobroOut(BaseModel):
@@ -253,8 +253,8 @@ class ReglaCobroOut(BaseModel):
     id_programa          : int
     valor_global         : Optional[float]
     valor_credito        : Optional[float]
-    fecha_vigencia_desde : str
-    fecha_vigencia_hasta : Optional[str]
+    fecha_vigencia_desde : date
+    fecha_vigencia_hasta : Optional[date]
     estado               : str
 
     class Config:
@@ -282,7 +282,7 @@ class DetalleVolanteOut(BaseModel):
 class VolanteOut(BaseModel):
     id_volante        : int
     numero_volante    : str
-    fecha_generacion  : str
+    fecha_generacion  : datetime
     semestre_a_cursar : int
     generacion_tipo   : str
     estado            : str
@@ -308,7 +308,7 @@ class RegistrarPago(BaseModel):
 class PagoOut(BaseModel):
     id_pago              : int
     valor_pagado         : float
-    fecha_pago           : str
+    fecha_pago           : datetime
     estado_pago          : str
     referencia_pago      : str
     canal_pago           : str
@@ -327,7 +327,7 @@ class MovimientoOut(BaseModel):
     codigo                : str
     descripcion           : str
     tipo_origen           : str
-    fecha_movimiento      : str
+    fecha_movimiento      : datetime
     valor                 : float
 
     class Config:
@@ -338,7 +338,7 @@ class CuentaCorrienteOut(BaseModel):
     id_estudiante  : int
     id_periodo     : int
     estado         : str
-    fecha_apertura : str
+    fecha_apertura : date
     total_cobros   : float
     total_pagos    : float
     balance        : float

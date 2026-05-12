@@ -23,7 +23,7 @@ ALGORITHM  = os.getenv("ALGORITHM", "HS256")
 EXPIRE_MIN = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 ADMIN_SECRET = os.getenv("ADMIN_SECRET")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 router = APIRouter(prefix="/auth", tags=["auth"])
 #------------
 
@@ -97,7 +97,7 @@ def build_usuario_out(usuario: models.Usuario):
 def register(
         data: schemas.UsuarioCreate,
         db: Session = Depends(database.get_db),
-        token: Optional[str] = Depends(OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False))
+        token: Optional[str] = Depends(OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False))
 ):
     
     # Verificar rol ADMINISTRADOR antes de registrar nuevo usuario
