@@ -196,3 +196,7 @@ def change_password(
     user.password_hash = hash_password(data.new_password)
     db.commit()
     return {"mensaje": "Contraseña actualizada correctamente"}
+
+@router.get("/me", response_model=schemas.UsuarioOut)
+def me(user: models.Usuario = Depends(get_current_user)):
+    return build_usuario_out(user)
