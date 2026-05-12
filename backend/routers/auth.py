@@ -7,7 +7,9 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+
+import secrets
+from utils.email import enviar_credenciales
 
 import models
 import database
@@ -146,8 +148,19 @@ def register(
     db.add(usuario)
     db.commit()
     db.refresh(usuario)
-
-    return build_usuario_out(usuario)
+    
+    # Enviar credenciales por correo
+    try:
+        enviar_credenciales(
+            nombre           = f"{persona.primer_nombre} {persona.primer_apellido}",
+            email            = data.correo_notificacion or persona.correo_personal,
+            username         = data.username,
+            password_temporal= data.password,
+        )
+    except Exception as e:
+        # Si el correo falla no rompemos el registro, solo lo logueamos
+        print(f"⚠️ No se pudo enviar el correo: {e}")
+        return build_usuario_out(usuario)
 
 
 @router.post("/login", response_model=schemas.Token)
@@ -171,6 +184,15 @@ def login(
     )
 
 
-@router.get("/me", response_model=schemas.UsuarioOut)
-def me(user: models.Usuario = Depends(get_current_user)):
-    return build_usuario_out(user)
+@router.put("/change-password")
+def change_password(
+        data: schemas.CambioPassword,
+        user: models.Usuario = Depends(get_current_user),
+        db: Session = Depends(database.get_db)
+):
+    if not verify_password(data.current_password, user.password_hash):
+        raise HTTPException(status_code=400, detail="Contraseña actual incorrecta")
+
+    user.password_hash = hash_password(data.new_password)
+    db.commit()
+    return {"mensaje": "Contraseña actualizada correctamente"}

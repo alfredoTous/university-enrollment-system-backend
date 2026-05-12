@@ -60,6 +60,9 @@ class Token(BaseModel):
     token_type: str
     user: UsuarioOut
 
+class CambioPassword(BaseModel):
+    current_password : str
+    new_password     : str
 #-------------------------------
 
 
